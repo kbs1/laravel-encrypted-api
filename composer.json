@@ -1,0 +1,27 @@
+{
+	"name": "kbs1/laravel-encrypted-api",
+	"description": "Encrypted API requests and responses between Laravel applications.",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "kbs1",
+			"email": "viliam.kubis@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=7.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Kbs1\\EncryptedApi\\": "src/"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Kbs1\\EncryptedApi\\Providers\\EncryptedApiServiceProvider"
+			]
+		}
+	}
+}
