@@ -29,12 +29,14 @@ class Base
 	public function getSecret1()
 	{
 		$this->checkSharedSecretFormat($this->secret1);
+		$this->checkSharedSecretsAreNotEqual();
 		return $this->secret1;
 	}
 
 	public function getSecret2()
 	{
 		$this->checkSharedSecretFormat($this->secret2);
+		$this->checkSharedSecretsAreNotEqual();
 		return $this->secret2;
 	}
 
@@ -105,6 +107,12 @@ class Base
 	protected function checkSharedSecretFormat($secret)
 	{
 		 if (strlen($secret) < $this->shared_secret_minimum_length)
+			throw new InvalidSharedSecretException();
+	}
+
+	protected function checkSharedSecretsAreNotEqual()
+	{
+		if (hash_equals($this->getSecret1(), $this->getSecret2()))
 			throw new InvalidSharedSecretException();
 	}
 
