@@ -99,7 +99,7 @@ It is adivsed to send each API service parameter using third (data) argument of 
 Althrough the package verifies the exact URL that was called (including query string and HTTP method) on the server side, sensitive data passed as
 query parameters or route segments can still be captured for example in server's access log.
 
-Securely passed parameters (third data argument) always overwrite query string paramets, using Laravel's `$route->merge()` method.
+Securely passed parameters (third data argument) always overwrite query string paramets, using Laravel's `$request->merge()` method.
 
 The only parameter that is advised to be passed as query string parameter or route segment is the `clientUuid` parameter, should you have multiple calling
 clients. As this parameter is used to load shared secrets for particular client, it can not be passed encrypted.
@@ -122,4 +122,4 @@ class ClientApi extends \Kbs1\EncryptedApi\Http\Middleware\EncryptedApi
 ## Replay attacks
 This package protects using simple replay attacks, as each signed request and response has it's unique identifier, and is only valid for 10 seconds.
 Implementation automatically stores each received identifier in the last 10 seconds on the server side, and discards any processing when encountering
-already processed payload identifier.
+already processed data identifier.
