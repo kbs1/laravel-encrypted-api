@@ -112,7 +112,7 @@ class Base
 
 	protected function checkSharedSecretsAreNotEqual()
 	{
-		if (hash_equals($this->getSecret1(), $this->getSecret2()))
+		if (hash_equals($this->secret1, $this->secret2))
 			throw new InvalidSharedSecretException();
 	}
 
