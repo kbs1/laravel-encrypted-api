@@ -11,6 +11,7 @@ class Base
 	protected $data_algorithm = 'aes-256-ctr';
 	protected $signature_algorithm = 'ripemd320';
 	protected $signature_length = 40;
+	protected $iv_length;
 	protected $id_length = 20;
 	protected $shared_secret_minimum_length = 16;
 
