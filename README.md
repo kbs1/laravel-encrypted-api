@@ -2,7 +2,7 @@
 Create encrypted API communication between Laravel applications in a breeze. Request and response data is transmitted securely using a two-way cipher,
 everything is checksummed to prevent modification (MITM attacks) in any way.
 
-This package is meant to be used in both the client and server applications. Since it handles both receiving the request (decrypting and verifying)
+This package is meant to be used in both the client and server applications. Since it handles both receiving the request (verifying and decrypting)
 and sending a request / response (encrypting and signing), the whole implementation is seamless and based only on a middleware.
 
 The middleware transparently modifies the incoming request and replaces the request data with decrypted values, so you can use your own
@@ -18,13 +18,16 @@ This package authenticates the calling client, since no other caller knows the s
 from applications under your or approved 3rd party control, even if the API rotes themselves are publicly open to the internet.
 
 ## Installation
-This package supports auto discovery. For laravel versions &lt; 5.5, add the following line in `config/app.php` providers section:
+```
+composer require kbs1/laravel-encrypted-api
+```
+The package is now installed. If you are using laravel version &lt; 5.5, add the following line in your `config/app.php` providers section:
 ```
 Kbs1\EncryptedApi\Providers\EncryptedApiServiceProvider::class,
 ```
 
 ## Configuration
-By default, the package supports encrypted communication with exactly one client, and one pair of shared secrets. First publish the config using
+By default, the package supports encrypted communication with exactly one client, with one pair of shared secrets. First publish the config using
 `php artisan vendor:publish --tag=encrypted-api` and set the appropriate `secret1` and `secret2` values (minimum 16 bytes in length).
 Do the same in your other application and you are ready to go!
 
