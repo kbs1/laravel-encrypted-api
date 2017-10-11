@@ -19,11 +19,7 @@ class Base
 		$this->data = $data;
 		$this->secret1 = $secret1;
 		$this->secret2 = $secret2;
-	}
-
-	public function getData()
-	{
-		return $this->data;
+		$this->iv_length = openssl_cipher_iv_length($this->data_algorithm);
 	}
 
 	public function getSecret1()
@@ -40,44 +36,19 @@ class Base
 		return $this->secret2;
 	}
 
-	protected function getDataAlgorithm()
+	protected function getIvLengthInHexNotation()
 	{
-		return $this->data_algorithm;
-	}
-
-	protected function getSignatureAlgorithm()
-	{
-		return $this->signature_algorithm;
-	}
-
-	protected function getSignatureLength()
-	{
-		return $this->signature_length;
+		return $this->iv_length * 2;
 	}
 
 	protected function getSignatureLengthInHexNotation()
 	{
-		return $this->getSignatureLength() * 2;
-	}
-
-	protected function getIvLength()
-	{
-		return openssl_cipher_iv_length($this->getDataAlgorithm());
-	}
-
-	protected function getIvLengthInHexNotation()
-	{
-		return $this->getIvLength() * 2;
-	}
-
-	protected function getIdLength()
-	{
-		return $this->id_length;
+		return $this->signature_length * 2;
 	}
 
 	protected function getIdLengthInHexNotation()
 	{
-		return $this->getIdLength() * 2;
+		return $this->id_length * 2;
 	}
 
 	protected function checkDataFormat($data)

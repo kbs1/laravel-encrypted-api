@@ -4,7 +4,7 @@ namespace Kbs1\EncryptedApi\Cryptography;
 
 use Kbs1\EncryptedApi\Exceptions\EncryptedApiException;
 
-class DataEncryptor extends Base
+class Encryptor extends Base
 {
 	protected $force_id, $used_id, $headers, $url, $method;
 
@@ -19,19 +19,19 @@ class DataEncryptor extends Base
 
 	public function encrypt()
 	{
-		$iv = $this->getRandomBytes($this->getIvLength());
+		$iv = $this->getRandomBytes($this->iv_length);
 
 		$data = [
-			'id' => $this->used_id = $this->force_id ?? $this->getRandomBytes($this->getIdLength()),
+			'id' => $this->used_id = $this->force_id ?? $this->getRandomBytes($this->id_length),
 			'timestamp' => time(),
-			'data' => $this->getData(),
+			'data' => $this->data,
 			'url' => $this->url,
 			'method' => strtolower($this->method),
 			'headers' => $this->headers,
 		];
 
-		$encrypted = bin2hex(openssl_encrypt(is_array($data) ? json_encode($data) : $data, $this->getDataAlgorithm(), $this->getSecret1(), 0, hex2bin($iv)));
-		$signature = hash_hmac($this->getSignatureAlgorithm(), $encrypted . $iv, $this->getSecret2());
+		$encrypted = bin2hex(openssl_encrypt(is_array($data) ? json_encode($data) : $data, $this->data_algorithm, $this->getSecret1(), 0, hex2bin($iv)));
+		$signature = hash_hmac($this->signature_algorithm, $encrypted . $iv, $this->getSecret2());
 
 		$this->checkDataFormat($encrypted);
 		$this->checkIvFormat($iv);

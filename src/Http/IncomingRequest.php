@@ -2,7 +2,7 @@
 
 namespace Kbs1\EncryptedApi\Http;
 
-use Kbs1\EncryptedApi\Cryptography\DataDecryptor;
+use Kbs1\EncryptedApi\Cryptography\Decryptor;
 use Kbs1\EncryptedApi\Exceptions\EncryptedApiException;
 
 class IncomingRequest
@@ -11,7 +11,7 @@ class IncomingRequest
 
 	public function __construct($request, $secret1, $secret2)
 	{
-		$this->decryptor = new DataDecryptor($request->getContent(), $secret1, $secret2);
+		$this->decryptor = new Decryptor($request->getContent(), $secret1, $secret2);
 		$this->request = $request;
 	}
 

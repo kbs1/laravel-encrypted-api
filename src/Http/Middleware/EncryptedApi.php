@@ -2,7 +2,6 @@
 
 namespace Kbs1\EncryptedApi\Http\Middleware;
 
-use Kbs1\EncryptedApi\Cryptography\Base as CryptographyBase;
 use Kbs1\EncryptedApi\Http\IncomingRequest;
 use Kbs1\EncryptedApi\Http\OutgoingResponse;
 use Kbs1\EncryptedApi\Exceptions\EncryptedApiException;
@@ -23,8 +22,7 @@ class EncryptedApi
 		$this->checkIpWhitelist($request);
 		$secrets = $this->getSharedSecrets($request);
 
-		$base = new CryptographyBase($request->getContent(), $secrets['secret1'], $secrets['secret2']);
-		$incoming = new IncomingRequest($request, $base->getSecret1(), $base->getSecret2());
+		$incoming = new IncomingRequest($request, $secrets['secret1'], $secrets['secret2']);
 
 		try {
 			$incoming->decrypt();
@@ -35,7 +33,7 @@ class EncryptedApi
 			$response = $handler->render($request, $ex);
 		}
 
-		$outgoing = new OutgoingResponse($response, $base->getSecret1(), $base->getSecret2(), $incoming->getId());
+		$outgoing = new OutgoingResponse($response, $secrets['secret1'], $secrets['secret2'], $incoming->getId());
 		$outgoing->encrypt();
 
 		return $response;

@@ -4,7 +4,7 @@ namespace Kbs1\EncryptedApi\Cryptography;
 
 use Kbs1\EncryptedApi\Exceptions\EncryptedApiException;
 
-class DataDecryptor extends Base
+class Decryptor extends Base
 {
 	public function decrypt()
 	{
@@ -19,7 +19,7 @@ class DataDecryptor extends Base
 
 	protected function parse()
 	{
-		$input = json_decode($this->getData());
+		$input = json_decode($this->data);
 		$this->checkJsonDecodeSuccess();
 
 		$this->checkSignatureFormat($input->signature);
@@ -31,7 +31,7 @@ class DataDecryptor extends Base
 
 	protected function verifySignature($input)
 	{
-		$expected = hash_hmac($this->getSignatureAlgorithm(), $input->data . $input->iv, $this->getSecret2());
+		$expected = hash_hmac($this->signature_algorithm, $input->data . $input->iv, $this->getSecret2());
 
 		if (!hash_equals($expected, $input->signature))
 			throw new InvalidSignatureException();
@@ -39,7 +39,7 @@ class DataDecryptor extends Base
 
 	protected function decryptData($input)
 	{
-		$decrypted = @openssl_decrypt(hex2bin($input->data), $this->getDataAlgorithm(), $this->getSecret1(), 0, hex2bin($input->iv));
+		$decrypted = @openssl_decrypt(hex2bin($input->data), $this->data_algorithm, $this->getSecret1(), 0, hex2bin($input->iv));
 
 		if ($decrypted === false)
 			throw new InvalidDataException();

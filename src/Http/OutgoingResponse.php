@@ -2,7 +2,7 @@
 
 namespace Kbs1\EncryptedApi\Http;
 
-use Kbs1\EncryptedApi\Cryptography\DataEncryptor;
+use Kbs1\EncryptedApi\Cryptography\Encryptor;
 
 class OutgoingResponse
 {
@@ -10,7 +10,7 @@ class OutgoingResponse
 
 	public function __construct($response, $secret1, $secret2, $id)
 	{
-		$this->encryptor = new DataEncryptor($response->content(), $secret1, $secret2, $id, (string) $response->headers);
+		$this->encryptor = new Encryptor($response->content(), $secret1, $secret2, $id, (string) $response->headers);
 		$this->response = $response;
 	}
 

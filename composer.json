@@ -10,7 +10,8 @@
 		}
 	],
 	"require": {
-		"php": ">=7.0"
+		"php": ">=7.0",
+		"laravel/laravel": ">=5.4"
 	},
 	"autoload": {
 		"psr-4": {

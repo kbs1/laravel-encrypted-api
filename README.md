@@ -94,8 +94,8 @@ and so on). This means no one, without knowing the required shared secrets, is a
 Fourth and fifth arguments (`secret1` and `secret2`) are optional as well and if they are omitted, shared secrets are loaded
 from `config/encrypted_api.php` file.
 
-For `GET` requests, the package will send a request body as well. This ensures the request must also be properly signed, and no one except the caller
-can call the route.
+For `GET` requests, the package will send a request body as well. This ensures the request must also be properly signed, and no one except the authorised
+caller can call the route.
 
 ### A note on query string and route parameters
 It is adivsed to send each API service parameter using third (data) argument of the `ApiCall` class only (even for GET requests).
@@ -125,4 +125,4 @@ class ClientApi extends \Kbs1\EncryptedApi\Http\Middleware\EncryptedApi
 ## Replay attacks
 This package protects using simple replay attacks, as each signed request and response has it's unique identifier, and is only valid for 10 seconds.
 Implementation automatically stores each received identifier in the last 10 seconds on the server side, and discards any processing when encountering
-already processed data identifier.
+already processed request identifier.
