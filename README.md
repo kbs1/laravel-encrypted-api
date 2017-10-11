@@ -15,7 +15,7 @@ of shared secrets).
 The called API routes should be served using HTTPS for extra security, but this is not a requirement.
 
 This package authenticates the calling client, since no other caller knows the shared secrets. This ensures your API is securely called only
-from applications under your or approved 3rd party control, even if the API rotes themselves are publicly open to the internet.
+from applications under your or approved 3rd party control, even if the API routes themselves are publicly open to the internet.
 
 ## Installation
 ```
@@ -66,7 +66,7 @@ Route::group(['prefix' => '/api/{clientUuid}', 'middleware' => ['clientApi']], f
 ```
 
 ### Sending requests (caller application)
-Calling encrypted API service can be accmplished in the following way:
+Calling encrypted API service can be accomplished in the following way:
 ```
 $call = new \Kbs1\EncryptedApi\Http\ApiCall("https://server-application.dev/api/$ourUuid/users/disable", 'POST', [
 	'user_uuid' => '...',
