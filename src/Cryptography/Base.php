@@ -86,6 +86,9 @@ class Base
 	{
 		if (hash_equals($this->secret1, $this->secret2))
 			throw new InvalidSharedSecretException();
+
+		if (substr($this->secret1, 0, $this->shared_secret_minimum_length) === substr($this->secret2, 0, $this->shared_secret_minimum_length))
+			throw new InvalidSharedSecretException();
 	}
 
 	protected function checkBinHexFormat($value, $length = null)

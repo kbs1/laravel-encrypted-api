@@ -29,8 +29,11 @@ Kbs1\EncryptedApi\Providers\EncryptedApiServiceProvider::class,
 ## Configuration
 By default, the package supports encrypted communication with exactly one client, with one pair of shared secrets. First publish the config using
 `php artisan vendor:publish --tag=encrypted-api` and set the appropriate `secret1` and `secret2` values (minimum 32 bytes in length, for `secret1`,
-only the first 32 bytes are used).
-Do the same in your other application and you are ready to go!
+only the first 32 bytes are used). Do the same in your other application and you are ready to go!
+
+For your convenience, `php artisan encrypted-api:secrets:generate` command is included to generate suitable shared secrets, or generate new ones.
+This command automatically publishes the config if it hasn't been published already. After executing, you can view the generated secrets by
+opening `config/encrypted_api.php` - copy the shared secrets to your other application and configuration is complete!
 
 ## Usage
 Once the package is installed, it automatically registers the `kbs1.encryptedApi` middleware alias.
