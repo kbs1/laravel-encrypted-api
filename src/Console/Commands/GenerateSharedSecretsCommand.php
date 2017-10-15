@@ -45,8 +45,8 @@ class GenerateSharedSecretsCommand extends Command
 
 		foreach (str_split($binary) as $byte) {
 			$ord = ord($byte);
-			if ($ord == 39)
-				$string .= '\\\'';
+			if ($ord == 34)
+				$string .= '\"';
 			else if ($ord < 32 || $ord > 126)
 				$string .= '\x' . ($ord < 17 ? '0' : '' ) . dechex($ord);
 			else
@@ -72,8 +72,8 @@ class GenerateSharedSecretsCommand extends Command
 			"'secret2' => ''",
 			"'ipv4_whitelist' => null",
 		], [
-			"'secret1' => '$secret1'",
-			"'secret2' => '$secret2'",
+			"'secret1' => \"$secret1\"",
+			"'secret2' => \"$secret2\"",
 			"'ipv4_whitelist' => " . var_export(config('encrypted_api.ipv4_whitelist'), true),
 		], $config);
 	}
