@@ -1,7 +1,7 @@
 <?php
 
 return [
-	// both secrets must be at least 16 bytes in length and must not be equal to each other
+	// both secrets must be at least 32 bytes in length and must not be equal to each other
 	'secret1' => '',
 	'secret2' => '',
 

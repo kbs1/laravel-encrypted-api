@@ -30,7 +30,7 @@ class Encryptor extends Base
 			'headers' => $this->headers,
 		];
 
-		$encrypted = bin2hex(openssl_encrypt(is_array($data) ? json_encode($data) : $data, $this->data_algorithm, $this->getSecret1(), 0, hex2bin($iv)));
+		$encrypted = bin2hex(openssl_encrypt(json_encode($data), $this->data_algorithm, $this->getSecret1(), OPENSSL_RAW_DATA, hex2bin($iv)));
 		$signature = hash_hmac($this->signature_algorithm, $encrypted . $iv, $this->getSecret2());
 
 		$this->checkDataFormat($encrypted);

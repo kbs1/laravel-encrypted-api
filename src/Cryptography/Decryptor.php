@@ -39,7 +39,7 @@ class Decryptor extends Base
 
 	protected function decryptData($input)
 	{
-		$decrypted = @openssl_decrypt(hex2bin($input->data), $this->data_algorithm, $this->getSecret1(), 0, hex2bin($input->iv));
+		$decrypted = @openssl_decrypt(hex2bin($input->data), $this->data_algorithm, $this->getSecret1(), OPENSSL_RAW_DATA, hex2bin($input->iv));
 
 		if ($decrypted === false)
 			throw new InvalidDataException();

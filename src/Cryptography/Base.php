@@ -9,11 +9,11 @@ class Base
 	protected $data, $secret1, $secret2;
 
 	protected $data_algorithm = 'aes-256-ctr';
-	protected $signature_algorithm = 'ripemd320';
-	protected $signature_length = 40;
+	protected $signature_algorithm = 'sha512';
+	protected $signature_length = 64;
 	protected $iv_length;
-	protected $id_length = 20;
-	protected $shared_secret_minimum_length = 16;
+	protected $id_length = 32;
+	protected $shared_secret_minimum_length = 32;
 
 	public function __construct($data, $secret1, $secret2)
 	{
