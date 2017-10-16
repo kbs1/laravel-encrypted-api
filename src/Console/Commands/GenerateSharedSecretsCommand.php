@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 
 class GenerateSharedSecretsCommand extends Command
 {
-	protected $signature = 'encrypted-api:secrets:generate';
+	protected $signature = 'encrypted-api:secrets:generate {--save : Overwrite current config/encrypted_api.php with generated secrets. IPv4 whitelist will be preserved.}';
 	protected $description = 'Generate suitable shared secrets for the Encrypted API package.';
 
 	public function handle()
@@ -14,6 +14,12 @@ class GenerateSharedSecretsCommand extends Command
 		$this->callSilent('vendor:publish', ['--tag' => 'encrypted-api']);
 
 		list($secret1, $secret2) = $this->generateSharedSecrets();
+
+		if (!$this->option('save')) {
+			$this->info('Generation complete! Place the following shared secrets in config/encrypted_api.php config file:');
+			$this->line("\t'secret1' => \"$secret1\",\n\t'secret2' => \"$secret2\",\n");
+			return;
+		}
 
 		try {
 			$config = $this->replaceSharedSecrets($this->loadDefaultConfiguration(), $secret1, $secret2);
@@ -36,17 +42,17 @@ class GenerateSharedSecretsCommand extends Command
 			$secret2 = openssl_random_pseudo_bytes(32);
 		} while (hash_equals($secret1, $secret2));
 
-		return [$this->binaryToStorableString($secret1), $this->binaryToStorableString($secret2)];
+		return [$this->binaryToOneLinePhpString($secret1), $this->binaryToOneLinePhpString($secret2)];
 	}
 
-	protected function binaryToStorableString($binary)
+	protected function binaryToOneLinePhpString($binary)
 	{
 		$string = '';
 
 		foreach (str_split($binary) as $byte) {
 			$ord = ord($byte);
-			if ($ord == 34)
-				$string .= '\"';
+			if ($ord == 34 || $ord == 36 || $ord == 92)
+				$string .= '\\' . $byte;
 			else if ($ord < 32 || $ord > 126)
 				$string .= '\x' . ($ord < 17 ? '0' : '' ) . dechex($ord);
 			else
