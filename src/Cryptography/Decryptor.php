@@ -22,7 +22,7 @@ class Decryptor extends Base
 		$input = json_decode($this->data);
 		$this->checkJsonDecodeSuccess();
 
-		if (!isset($input->signature) || !isset($input->iv) || !isset($input->data))
+		if (!property_exists($input, 'signature') || !property_exists($input, 'iv') || !property_exists($input, 'data'))
 			throw new InvalidDataException();
 
 		$this->checkSignatureFormat($input->signature);
@@ -50,7 +50,8 @@ class Decryptor extends Base
 		$decrypted = json_decode($decrypted);
 		$this->checkJsonDecodeSuccess();
 
-		if (!isset($decrypted->id) || !isset($decrypted->timestamp) || !isset($decrypted->data) || !isset($decrypted->url) || !isset($decrypted->method) || !isset($decrypted->headers))
+		if (!property_exists($decrypted, 'id') || !property_exists($decrypted, 'timestamp') || !property_exists($decrypted, 'data')
+			|| !property_exists($decrypted, 'url') || !property_exists($decrypted, 'method')|| !property_exists($decrypted, 'headers'))
 			throw new InvalidDataException();
 
 		return $decrypted;
