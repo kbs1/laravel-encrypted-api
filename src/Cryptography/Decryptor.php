@@ -19,11 +19,7 @@ class Decryptor extends Base
 
 	protected function parse()
 	{
-		$input = json_decode($this->data);
-		$this->checkJsonDecodeSuccess();
-
-		if (!property_exists($input, 'signature') || !property_exists($input, 'iv') || !property_exists($input, 'data'))
-			throw new InvalidDataException();
+		$input = $this->decodeAndCheckJson($this->data, ['signature', 'iv', 'data']);
 
 		$this->checkSignatureFormat($input->signature);
 		$this->checkIvFormat($input->iv);
@@ -47,14 +43,7 @@ class Decryptor extends Base
 		if ($decrypted === false)
 			throw new InvalidDataException();
 
-		$decrypted = json_decode($decrypted);
-		$this->checkJsonDecodeSuccess();
-
-		if (!property_exists($decrypted, 'id') || !property_exists($decrypted, 'timestamp') || !property_exists($decrypted, 'data')
-			|| !property_exists($decrypted, 'url') || !property_exists($decrypted, 'method')|| !property_exists($decrypted, 'headers'))
-			throw new InvalidDataException();
-
-		return $decrypted;
+		return $this->decodeAndCheckJson($decrypted, ['id', 'timestamp', 'data', 'url', 'method', 'headers']);
 	}
 
 	protected function verifyTimestamp($data)
@@ -63,10 +52,18 @@ class Decryptor extends Base
 			throw new InvalidTimestampException();
 	}
 
-	protected function checkJsonDecodeSuccess()
+	protected function decodeAndCheckJson($input, array $fields)
 	{
+		$result = json_decode($input);
+
 		if (json_last_error() !== JSON_ERROR_NONE)
 			throw new InvalidDataException();
+
+		foreach ($fields as $field)
+			if (!property_exists($result, $field))
+				throw new InvalidDataException();
+
+		return $result;
 	}
 }
 
