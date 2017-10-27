@@ -22,6 +22,9 @@ class Decryptor extends Base
 		$input = json_decode($this->data);
 		$this->checkJsonDecodeSuccess();
 
+		if (!isset($input->signature) || !isset($input->iv) || !isset($input->data))
+			throw new InvalidDataException();
+
 		$this->checkSignatureFormat($input->signature);
 		$this->checkIvFormat($input->iv);
 		$this->checkDataFormat($input->data);
@@ -46,6 +49,9 @@ class Decryptor extends Base
 
 		$decrypted = json_decode($decrypted);
 		$this->checkJsonDecodeSuccess();
+
+		if (!isset($decrypted->id) || !isset($decrypted->timestamp) || !isset($decrypted->data) || !isset($decrypted->url) || !isset($decrypted->method) || !isset($decrypted->headers))
+			throw new InvalidDataException();
 
 		return $decrypted;
 	}
