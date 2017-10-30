@@ -25,7 +25,10 @@ class IncomingRequest
 		$this->checkMethod($input);
 
 		$data = $input->data;
-		$this->request->merge(json_decode(json_encode($data), true));
+		$parameters = json_decode(json_encode($data), true);
+
+		if (is_array($parameters))
+			$this->request->merge($parameters);
 	}
 
 	public function getId()
